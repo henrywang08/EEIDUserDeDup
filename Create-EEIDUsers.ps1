@@ -1,6 +1,6 @@
 param(
     [string]$TenantDomain = "MarsMSCustomer.onmicrosoft.com",
-    [int]$UserCount = 100,
+    [int]$UserCount = 1000,
     [string]$UserPrefix = "dedup-test-",
     [string]$DisplayNamePrefix = "EEID User",
     [string]$OutputCsv = ".\created-users.csv"
@@ -121,16 +121,6 @@ for ($index = 1; $index -le $UserCount; $index++) {
     }
 
     if ($existingUser) {
-        $attributeStatus = "DedupHash updated on existing user"
-        try {
-            Update-MgUser -UserId $existingUser.Id -BodyParameter @{
-                $dedupHashExtensionProperty = $dedupHashString
-            } -ErrorAction Stop
-        }
-        catch {
-            $attributeStatus = "DedupHash update failed: $($_.Exception.Message)"
-        }
-
         $results.Add([pscustomobject]@{
             RawUserName = $rawUserName
             DedupHash = $dedupHashString
@@ -138,10 +128,10 @@ for ($index = 1; $index -le $UserCount; $index++) {
             DisplayName = $displayName
             Password = ""
             ObjectId = $existingUser.Id
-            Status = "UpdatedExisting"
-            DedupHashAttribute = $attributeStatus
+            Status = "SkippedExisting"
+            DedupHashAttribute = "Ignored"
         }) | Out-Null
-        Write-Host "Updated existing: $rawUserName => $upn"
+        Write-Host "Skipped existing: $rawUserName => $upn"
         continue
     }
 
@@ -199,4 +189,10 @@ for ($index = 1; $index -le $UserCount; $index++) {
 }
 
 $results | Export-Csv -Path $OutputCsv -NoTypeInformation -Encoding UTF8
+
+$createdCount = ($results | Where-Object { $_.Status -eq "Created" }).Count
+$skippedCount = ($results | Where-Object { $_.Status -eq "SkippedExisting" }).Count
+$failedCount = ($results | Where-Object { $_.Status -like "Failed:*" }).Count
+
+Write-Host "Summary: Created=$createdCount; SkippedExisting=$skippedCount; Failed=$failedCount"
 Write-Host "Done. Results written to: $OutputCsv"
