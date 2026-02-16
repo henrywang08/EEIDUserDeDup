@@ -1,0 +1,3 @@
+"RawUserName","DedupHash","UserPrincipalName","DisplayName","Password","ObjectId","Status","DedupHashAttribute"
+"dedup-test-1","c788f81698c65e175673c83da2ea0539c539a929ca0985169eb81157563b793d","c788f81698c65e175673c83da2ea0539c539a929ca0985169eb81157563b793d@MarsMSCustomer.onmicrosoft.com","EEID User 1","","2e90b21a-78eb-4c58-b460-c0f6efc77c23","UpdatedExisting","DedupHash updated on existing user"
+"dedup-test-2","64f110b462b8907d8ca360fb6dc96f6036a1d8f8100df76215d21ef68ab19a23","64f110b462b8907d8ca360fb6dc96f6036a1d8f8100df76215d21ef68ab19a23@MarsMSCustomer.onmicrosoft.com","EEID User 2","","c96bddf4-6b77-4ddd-a828-3a2f1d20dc4f","UpdatedExisting","DedupHash updated on existing user"
