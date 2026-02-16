@@ -1,6 +1,6 @@
 param(
     [string]$TenantDomain = "MarsMSCustomer.onmicrosoft.com",
-    [int]$UserCount = 1000,
+    [int]$UserCount = 10000,
     [string]$UserPrefix = "dedup-test-",
     [string]$DisplayNamePrefix = "EEID User",
     [string]$OutputCsv = ".\created-users.csv"
